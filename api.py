@@ -75,7 +75,7 @@ def review():
             query="SELECT id FROM review ORDER BY id DESC LIMIT 1;"
             cur.execute(query,)   
             primary_key = cur.fetchall()
-            query='INSERT into review(id,name,show,review,upvote,downvote) values (1,?,?,?,0,0);'
+            query='INSERT into review(id,name,show,review,upvote,downvote) values (primary_key+1,?,?,?,0,0);'
             cur.execute(query,(name,review,show,))
             con.commit()
             cur.close()
