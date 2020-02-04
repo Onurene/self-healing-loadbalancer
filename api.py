@@ -80,7 +80,40 @@ def review():
             con.commit()
             cur.close()
             return Response(status=201)
-            
+
+@app.route('/listreviews',methods=['GET'])
+def listreview():
+    if request.method=='GET':
+        con = sqlite3.connect("self_healing.db")
+        cur = con.cursor()
+        query='SELECT * from review;'
+        cur.execute(query,)
+        coun=cur.fetchall()
+        return json.dumps(coun),200
+      
+@app.route('/listreviews/<review_id>/upvote', methods=['POST'])
+def upvote(review_id):
+    if request.method=='POST':
+        con = sqlite3.connect("self_healing.db")
+        cur = con.cursor()
+        query='update review set upvote=upvote+1 where id=?;'
+        cur.execute(query,(review_id,))
+        coun=cur.fetchall()
+        con.commit()
+        cur.close()
+        return json.dumps(coun),200
+    
+@app.route('/listreviews/<review_id>/downvote', methods=['POST'])
+def downvote(review_id):
+    if request.method=='POST':
+        con = sqlite3.connect("self_healing.db")
+        cur = con.cursor()
+        query='update review set downvote=downvote+1 where id=?;'
+        cur.execute(query,(review_id,))
+        coun=cur.fetchall()
+        con.commit()
+        cur.close()
+        return json.dumps(coun),200            
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', debug=True, port=8000)
